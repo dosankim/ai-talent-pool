@@ -10,7 +10,7 @@ async function updateAgentLimits() {
 
         const response = await retellClient.agent.update(agentId, {
             max_call_duration_ms: 300000, // 5 minutes max
-            end_call_after_silence_ms: 15000 // Hang up after 15 seconds of silence
+            end_call_after_silence_ms: 10000 // Hang up after 10 seconds of silence
         });
 
         console.log("Agent successfully updated with call limits!");
