@@ -49,7 +49,10 @@ export async function POST(request: Request) {
         // Update DB status to indicate call is in progress/initiated
         await supabase
             .from('users')
-            .update({ status: '전화 발신됨' })
+            .update({
+                status: '전화 발신됨',
+                call_initiated_at: new Date().toISOString()
+            })
             .eq('id', userId);
 
         return NextResponse.json({ success: true, callId: callResponse.call_id });

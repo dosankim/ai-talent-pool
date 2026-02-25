@@ -6,10 +6,10 @@ export async function POST(request: Request) {
     try {
         const payload = await request.json();
 
-        // Retell AI sends different event types. We only care when the call analysis is ready.
+        // Retell AI sends different event types. We care about call_started, call_analyzed, and call_ended.
         const eventType = payload.event;
-        if (eventType !== 'call_analyzed' && eventType !== 'call_ended') {
-            // Ignore other events like 'call_started'
+        if (!['call_started', 'call_analyzed', 'call_ended'].includes(eventType)) {
+            // Ignore other events
             return NextResponse.json({ success: true, message: 'Event ignored' });
         }
 
@@ -23,14 +23,19 @@ export async function POST(request: Request) {
 
         let transcript = callData.transcript || '';
 
+        let durationSeconds = null;
+
         // Calculate call duration
         if (callData.start_timestamp && callData.end_timestamp) {
             const diffMs = callData.end_timestamp - callData.start_timestamp;
-            const minutes = Math.floor(diffMs / 60000);
-            const seconds = Math.floor((diffMs % 60000) / 1000);
+            durationSeconds = Math.floor(diffMs / 1000);
+            const minutes = Math.floor(durationSeconds / 60);
+            const seconds = durationSeconds % 60;
             const durationStr = `[통화 소요 시간: ${minutes}분 ${seconds}초]\n`;
             transcript = durationStr + transcript;
         }
+
+        const disconnection_reason = callData.disconnection_reason || null;
 
         const analysis = callData.call_analysis || {};
 
@@ -38,12 +43,24 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Metadata에 user_id가 없습니다.' }, { status: 400 });
         }
 
+        if (eventType === 'call_started') {
+            await supabase
+                .from('users')
+                .update({ status: '통화 중' })
+                .eq('id', user_id);
+            return NextResponse.json({ success: true, message: 'Call started processed' });
+        }
+
         const isSuccess = call_status === 'ended' || call_status === 'completed';
 
-        // 1. users 테이블의 상태 업데이트 ('통화 완료')
+        // 1. users 테이블의 상태 업데이트 ('통화 완료' 또는 '통화 실패')
         await supabase
             .from('users')
-            .update({ status: isSuccess ? '통화 완료' : '통화 실패' })
+            .update({
+                status: isSuccess ? '통화 완료' : '통화 실패',
+                call_duration_seconds: durationSeconds,
+                disconnection_reason: disconnection_reason
+            })
             .eq('id', user_id);
 
         // 분석 완료 시 프로필 저장 로직 (call_analyzed 이벤트일 경우 주로)
@@ -57,20 +74,42 @@ export async function POST(request: Request) {
             const personality_traits = analysis.custom_analysis_data?.personality_traits || '분석 중';
             const spelling_corrected_notes = analysis.custom_analysis_data?.spelling_corrected_notes || '보정 내용 없음';
 
-            const { data: profile, error } = await supabase
+            const { data: profileExists } = await supabase
                 .from('profiles')
-                .insert([{
-                    user_id: user_id,
-                    full_transcript: transcript,
-                    career_summary: career_summary,
-                    current_situation: current_situation,
-                    needs: needs,
-                    sentiment: sentiment,
-                    personality_traits: personality_traits,
-                    spelling_corrected_notes: spelling_corrected_notes,
-                }])
-                .select()
+                .select('id')
+                .eq('user_id', user_id)
                 .single();
+
+            const profileData = {
+                user_id: user_id,
+                full_transcript: transcript,
+                career_summary: career_summary,
+                current_situation: current_situation,
+                needs: needs,
+                sentiment: sentiment,
+                personality_traits: personality_traits,
+                spelling_corrected_notes: spelling_corrected_notes,
+            };
+
+            let profile, error;
+            if (profileExists) {
+                const res = await supabase
+                    .from('profiles')
+                    .update(profileData)
+                    .eq('user_id', user_id)
+                    .select()
+                    .single();
+                profile = res.data;
+                error = res.error;
+            } else {
+                const res = await supabase
+                    .from('profiles')
+                    .insert([profileData])
+                    .select()
+                    .single();
+                profile = res.data;
+                error = res.error;
+            }
 
             if (error) {
                 console.error('Profile 저장 오류:', error);

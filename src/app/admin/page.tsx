@@ -9,6 +9,9 @@ type UserProfile = {
     phone: string;
     status: string;
     created_at: string;
+    call_initiated_at: string | null;
+    call_duration_seconds: number | null;
+    disconnection_reason: string | null;
     profiles: {
         career_summary: string;
         current_situation: string;
@@ -27,6 +30,8 @@ export default function AdminDashboard() {
 
     useEffect(() => {
         fetchUsers();
+        const intervalId = setInterval(fetchUsers, 5000);
+        return () => clearInterval(intervalId);
     }, []);
 
     const fetchUsers = async () => {
@@ -35,13 +40,19 @@ export default function AdminDashboard() {
             const { data, error } = await supabase
                 .from("users")
                 .select(`
-          id, name, phone, status, created_at,
+          id, name, phone, status, created_at, call_initiated_at, call_duration_seconds, disconnection_reason,
           profiles ( career_summary, current_situation, needs, sentiment, personality_traits, spelling_corrected_notes, full_transcript )
         `)
                 .order("created_at", { ascending: false });
 
             if (error) throw error;
             setUsers(data as any);
+
+            setSelectedUser((prev) => {
+                if (!prev) return null;
+                const updated = (data as any).find((u: UserProfile) => u.id === prev.id);
+                return updated || prev;
+            });
         } catch (error) {
             console.error("Error fetching data:", error);
         } finally {
@@ -100,11 +111,35 @@ export default function AdminDashboard() {
                         <div className="profile-card animate-fade-in">
                             <div className="profile-header">
                                 <h2>{selectedUser.name} 님의 프로필</h2>
-                                <span className="profile-date">
-                                    통화(등록) 시간: {new Date(selectedUser.created_at).toLocaleString('ko-KR', {
-                                        year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
-                                    })}
-                                </span>
+                                <div className="profile-metadata" style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '10px' }}>
+                                    <span className="profile-date">
+                                        🗓️ <strong>신청 시간:</strong> {new Date(selectedUser.created_at).toLocaleString('ko-KR', {
+                                            year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
+                                        })}
+                                    </span>
+                                    {selectedUser.call_initiated_at && (
+                                        <span className="profile-date">
+                                            📞 <strong>통화 발신 시간:</strong> {new Date(selectedUser.call_initiated_at).toLocaleString('ko-KR', {
+                                                year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
+                                            })}
+                                        </span>
+                                    )}
+                                    {selectedUser.call_duration_seconds !== null && (
+                                        <span className="profile-date" style={{ color: '#059669' }}>
+                                            ⏱️ <strong>실제 통화 유지 시간:</strong> {Math.floor(selectedUser.call_duration_seconds / 60)}분 {selectedUser.call_duration_seconds % 60}초
+                                        </span>
+                                    )}
+                                    {selectedUser.status === '통화 실패' && selectedUser.disconnection_reason && (
+                                        <span className="profile-date" style={{ color: '#dc2626' }}>
+                                            ⚠️ <strong>발신 실패 사유:</strong> {selectedUser.disconnection_reason === 'user_hangup' ? '상대방이 전화를 끊음 (수신거부/종료)' :
+                                                selectedUser.disconnection_reason === 'dial_failed' ? '전화 연결 실패 (없는 번호 또는 부재중)' :
+                                                    selectedUser.disconnection_reason === 'machine_detected' ? '음성사서함으로 연결됨' :
+                                                        selectedUser.disconnection_reason === 'agent_hangup' ? 'AI 상담원이 전화를 끊음' :
+                                                            selectedUser.disconnection_reason === 'error' ? '시스템 오류' :
+                                                                selectedUser.disconnection_reason}
+                                        </span>
+                                    )}
+                                </div>
                                 {(selectedUser.status === '통화 대기' || selectedUser.status === '통화 실패' || selectedUser.status === '전화 발신됨') && (
                                     <button
                                         className="trigger-call-btn"
@@ -202,3 +237,5 @@ export default function AdminDashboard() {
         </div>
     );
 }
+
+// Force rebuild: 1771996562546
