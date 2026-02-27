@@ -26,9 +26,6 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <header className="header">
-          <a href="/" className="logo">실버 <span className="highlight">캐스팅</span></a>
-        </header>
         {children}
         <AdminLink />
       </body>
