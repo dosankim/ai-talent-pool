@@ -140,10 +140,10 @@ export default function AdminDashboard() {
                                         </span>
                                     )}
                                 </div>
-                                {(selectedUser.status === '통화 대기' || selectedUser.status === '통화 실패' || selectedUser.status === '전화 발신됨') && (
+                                {(selectedUser.status === '통화 대기' || selectedUser.status === '통화 실패' || selectedUser.status === '전화 발신됨' || selectedUser.status === '프로필 완성' || selectedUser.status === '통화 완료') && (
                                     <button
                                         className="trigger-call-btn"
-                                        style={{ marginLeft: 'auto', padding: '8px 16px', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                                        style={{ marginLeft: 'auto', padding: '8px 16px', backgroundColor: (selectedUser.status === '프로필 완성' || selectedUser.status === '통화 완료') ? '#10b981' : '#3b82f6', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
                                         onClick={async () => {
                                             try {
                                                 const res = await fetch('/api/call', {
@@ -167,7 +167,7 @@ export default function AdminDashboard() {
                                             }
                                         }}
                                     >
-                                        전화 걸기 (AI)
+                                        {(selectedUser.status === '프로필 완성' || selectedUser.status === '통화 완료') ? '다시 전화 걸기 (AI)' : '전화 걸기 (AI)'}
                                     </button>
                                 )}
                             </div>
