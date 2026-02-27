@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "실버 캐스팅 | 중장년 AI 전화 인터뷰",
-  description: "AI와의 전화를 통해 완성되는 당신만의 빛나는 이력서. 중장년층을 위한 맞춤형 인재풀 서비스입니다.",
+  title: "AI 시니어 캐스팅 | 중장년 AI 전화 인터뷰",
+  description: "AI가 당신의 경력과 역량을 분석해 최적의 역할 자산으로 전환해드립니다. 중장년층을 위한 맞춤형 인재풀 서비스입니다.",
 };
 
 export default function RootLayout({

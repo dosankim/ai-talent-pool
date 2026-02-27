@@ -71,7 +71,7 @@ export default function AdminDashboard() {
     return (
         <div className="admin-container animate-fade-in">
             <header className="admin-header delay-1">
-                <h1 className="admin-title">실버 캐스팅 <span className="highlight">인재풀 대시보드</span></h1>
+                <h1 className="admin-title">AI 시니어 캐스팅 <span className="highlight">인재풀 대시보드</span></h1>
                 <p className="subtitle">AI 통화를 통해 수집된 시니어 인재들의 프로필을 확인하세요.</p>
             </header>
 
