@@ -32,7 +32,8 @@ export async function POST(request: Request) {
         }
 
         // 2. Retell AI Web Call 생성
-        const agentId = process.env.RETELL_AGENT_ID || "agent_cca4333d1b63d905ee50c810c7";
+        // Vercel 환경 변수에 과거 에이전트 ID가 캐싱되어 있을 수 있으므로 명시적으로 최신 ID를 하드코딩합니다.
+        const agentId = "agent_cca4333d1b63d905ee50c810c7";
 
         const webCallResponse = await retell.call.createWebCall({
             agent_id: agentId,
