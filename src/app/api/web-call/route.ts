@@ -40,11 +40,11 @@ export async function POST(request: Request) {
                 user_id: user.id
             },
             retell_llm_dynamic_variables: {
-                user_name: name
+                user_name: user.name
             }
         });
 
-        console.log(`[Web Call Created] User: ${name}, Call ID: ${webCallResponse.call_id}`);
+        console.log(`[Web Call Created] User: ${user.name}, Call ID: ${webCallResponse.call_id}`);
 
         // 3. 유저 상태 업데이트
         await supabase
