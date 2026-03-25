@@ -139,7 +139,7 @@ export default function ConsultPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 text-white flex flex-col">
+        <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 text-white flex flex-col break-keep">
             {/* Header */}
             <header className="px-6 py-5 flex items-center justify-between">
                 <Link href="/" className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
@@ -172,7 +172,7 @@ export default function ConsultPage() {
                                     AI <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-yellow-400">온라인 상담</span>
                                 </h1>
                                 <p className="text-slate-400 leading-relaxed text-sm">
-                                    간단한 정보를 입력하시고 AI 상담사와 바로 대화해 보세요.<br className="hidden sm:block"/>
+                                    간단한 정보를 입력하시고 AI 상담사와 바로 대화해 보세요.<br />
                                     마이크를 통해 편안하게 이야기해 주시면 됩니다.
                                 </p>
                             </div>

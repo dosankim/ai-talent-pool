@@ -1,0 +1,259 @@
+
+<style>
+.flow { display:flex; flex-direction:column; gap:4px; padding:8px 0; }
+.stage { border-radius:12px; overflow:hidden; margin-bottom:4px; }
+.stage-header { padding:10px 16px; display:flex; align-items:center; gap:10px; }
+.stage-dot { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:500; flex-shrink:0; }
+.stage-title { font-size:13px; font-weight:500; }
+.stage-sub { font-size:11px; opacity:0.75; margin-top:1px; }
+.stage-body { padding:0 16px 14px; }
+.q-item { padding:11px 0; border-bottom:1px solid rgba(0,0,0,0.06); }
+.q-item:last-child { border-bottom:none; }
+.q-label { font-size:10px; font-weight:500; padding:2px 7px; border-radius:10px; display:inline-block; margin-bottom:6px; }
+.q-text { font-size:13px; color:var(--color-text-primary); line-height:1.7; margin-bottom:5px; font-weight:500; }
+.q-example { font-size:12px; color:var(--color-text-secondary); line-height:1.6; margin-bottom:4px; font-style:italic; }
+.q-note { font-size:11px; color:var(--color-text-tertiary); line-height:1.55; }
+.q-followup { font-size:11px; color:var(--color-text-secondary); line-height:1.55; margin-top:5px; padding:6px 10px; border-radius:6px; border-left:2px solid var(--color-border-secondary); }
+.connector { width:2px; height:14px; margin:0 auto; background:var(--color-border-secondary); }
+.badge-new { font-size:10px; padding:1px 6px; border-radius:8px; background:#FAECE7; color:#712B13; margin-left:6px; }
+.badge-mod { font-size:10px; padding:1px 6px; border-radius:8px; background:#FAEEDA; color:#633806; margin-left:6px; }
+
+.s-ice .stage-header { background:#E1F5EE; }
+.s-ice .stage-dot { background:#1D9E75; color:#fff; }
+.s-ice .stage-title { color:#085041; }
+.s-ice .stage-sub { color:#0F6E56; }
+.s-ice .stage-body { background:#f5fdf9; }
+.s-ice .q-label { background:#9FE1CB; color:#085041; }
+
+.s-work .stage-header { background:#FAEEDA; }
+.s-work .stage-dot { background:#BA7517; color:#fff; }
+.s-work .stage-title { color:#633806; }
+.s-work .stage-sub { color:#854F0B; }
+.s-work .stage-body { background:#fefaf4; }
+.s-work .q-label { background:#FAC775; color:#633806; }
+
+.s-deep .stage-header { background:#EEEDFE; }
+.s-deep .stage-dot { background:#534AB7; color:#fff; }
+.s-deep .stage-title { color:#3C3489; }
+.s-deep .stage-sub { color:#534AB7; }
+.s-deep .stage-body { background:#f8f8ff; }
+.s-deep .q-label { background:#CECBF6; color:#3C3489; }
+
+.s-role .stage-header { background:#EAF3DE; }
+.s-role .stage-dot { background:#3B6D11; color:#fff; }
+.s-role .stage-title { color:#27500A; }
+.s-role .stage-sub { color:#3B6D11; }
+.s-role .stage-body { background:#f6fbf0; }
+.s-role .q-label { background:#C0DD97; color:#27500A; }
+
+.s-cond .stage-header { background:#FAECE7; }
+.s-cond .stage-dot { background:#993C1D; color:#fff; }
+.s-cond .stage-title { color:#712B13; }
+.s-cond .stage-sub { color:#993C1D; }
+.s-cond .stage-body { background:#fef6f4; }
+.s-cond .q-label { background:#F5C4B3; color:#712B13; }
+
+.s-close .stage-header { background:#E6F1FB; }
+.s-close .stage-dot { background:#185FA5; color:#fff; }
+.s-close .stage-title { color:#0C447C; }
+.s-close .stage-sub { color:#185FA5; }
+.s-close .stage-body { background:#f4f9fe; }
+.s-close .q-label { background:#B5D4F4; color:#0C447C; }
+</style>
+
+<div class="flow">
+
+  <!-- STEP 1: Ice Breaking (수정) -->
+  <div class="stage s-ice">
+    <div class="stage-header">
+      <div class="stage-dot">1</div>
+      <div>
+        <div class="stage-title">Ice Breaking — 오늘의 나 <span class="badge-mod">수정</span></div>
+        <div class="stage-sub">긴장 해소 · 말문 열기 · 약 2분</div>
+      </div>
+    </div>
+    <div class="stage-body">
+      <div class="q-item">
+        <div class="q-label">도입</div>
+        <div class="q-text">안녕하세요! 오늘 기분은 어떠세요? 날씨가 요즘 어떤가요, 거기는요?</div>
+        <div class="q-note">→ 가장 자연스러운 일상 대화로 시작. 답변 속도·어투로 이후 질문 템포 조절</div>
+      </div>
+      <div class="q-item">
+        <div class="q-label">일상</div>
+        <div class="q-text">요즘 가장 즐겁게 하고 계신 일이 있다면 들려주세요. 아주 작은 것도 좋아요.</div>
+        <div class="q-note">→ 취향(Taste) 축 초기 신호 수집. "혼자 하는 것"인지 "누군가와 함께하는 것"인지 주목</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector"></div>
+
+  <!-- STEP 2: 일 경험 채굴 -->
+  <div class="stage s-work">
+    <div class="stage-header">
+      <div class="stage-dot">2</div>
+      <div>
+        <div class="stage-title">일 경험 채굴 — 내가 해온 것들</div>
+        <div class="stage-sub">4대 역량 축 데이터 수집 핵심 구간 · 6~8분</div>
+      </div>
+    </div>
+    <div class="stage-body">
+      <div class="q-item">
+        <div class="q-label">경력 진입</div>
+        <div class="q-text">가장 오래, 또는 가장 열심히 하셨던 일이 뭔가요? 직함 말고, 실제로 어떤 걸 하셨는지 들려주세요.</div>
+        <div class="q-example">"그러니까 총무팀에 계셨군요. 거기서 주로 어떤 일을 도맡아 하셨어요?"</div>
+        <div class="q-note">→ 기술(Skill) 축 핵심 데이터. 직함이 아닌 행동 단위로 채굴</div>
+        <div class="q-followup">꼬리 질문: "그 일에서 가장 잘한다는 소리 들었던 부분이 어디예요?"</div>
+      </div>
+      <div class="q-item">
+        <div class="q-label">강점 발굴</div>
+        <div class="q-text">일하면서 "이건 나밖에 못 하겠다" 싶었던 순간이 있으셨나요?</div>
+        <div class="q-example">"아, 그 상황에서 그렇게 하신 거군요. 다른 분들은 어떻게 했나요?"</div>
+        <div class="q-note">→ 문제해결(Problem Solving) 축. 비정형 강점 언어화의 핵심 질문</div>
+        <div class="q-followup">꼬리 질문: "그때 어떤 방식으로 해결하셨어요? 순서대로 말씀해 주실 수 있어요?"</div>
+      </div>
+      <div class="q-item">
+        <div class="q-label">관계 역량</div>
+        <div class="q-text">일하면서 사람 때문에 힘들었던 적도, 사람 덕분에 잘 됐던 적도 있으셨을 것 같아요. 어떠셨어요?</div>
+        <div class="q-note">→ 관계(Relationship) 축. 갈등 해결·중재·협업 패턴 탐색</div>
+        <div class="q-followup">꼬리 질문: "그 분과 어떻게 풀어나가셨어요?"</div>
+      </div>
+      <div class="q-item">
+        <div class="q-label">취향 연결</div>
+        <div class="q-text">일 말고, 돈이 안 돼도 계속 하게 되는 것, 시간 가는 줄 모르고 하는 게 있으세요?</div>
+        <div class="q-note">→ 취향(Taste) 축. 일거리 연결 시 지속 동기 예측에 활용</div>
+        <div class="q-followup">꼬리 질문: "그게 예전 일이랑 비슷한 부분이 있으세요, 아니면 완전히 달라요?"</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector"></div>
+
+  <!-- STEP 3: 일 동기 탐색 -->
+  <div class="stage s-deep">
+    <div class="stage-header">
+      <div class="stage-dot">3</div>
+      <div>
+        <div class="stage-title">일 동기 탐색 — 왜 일하고 싶은가</div>
+        <div class="stage-sub">Y축 동기 원천 + 보상 기대치 데이터 · 3~4분</div>
+      </div>
+    </div>
+    <div class="stage-body">
+      <div class="q-item">
+        <div class="q-label">동기①</div>
+        <div class="q-text">SAI+를 통해 일거리를 찾으시려는 게, 어떤 마음에서 오신 건가요?</div>
+        <div class="q-example">"수입이 필요하신 건지, 뭔가 하고 싶으신 건지, 아니면 둘 다인지요."</div>
+        <div class="q-note">→ 보상 기대치 직접 파악. 유형 분류 Y축 핵심 데이터</div>
+        <div class="q-followup">꼬리 질문: "만약 소득이 없어도 의미 있는 일이라면 하실 의향이 있으세요?"</div>
+      </div>
+      <div class="q-item">
+        <div class="q-label">동기②</div>
+        <div class="q-text">일하면서 가장 기분 좋았던 순간이 언제였어요? 칭찬받았을 때, 결과가 나왔을 때, 누군가에게 도움됐을 때, 어떤 때였나요?</div>
+        <div class="q-note">→ 동기 원천 정밀화. 자기실현형인지 사회기여형인지 구분</div>
+      </div>
+      <div class="q-item">
+        <div class="q-label">동기③</div>
+        <div class="q-text">앞으로 하게 될 일에서 가장 피하고 싶은 것이 있다면요?</div>
+        <div class="q-example">"체력적으로 힘든 것, 대인관계 갈등, 시간이 너무 묶이는 것 등이요."</div>
+        <div class="q-note">→ 부정 조건 파악. 매칭 시 제외 필터로 활용. 실패 매칭 방지에 필수</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector"></div>
+
+  <!-- STEP 4: 역할 연결 (신규 추가) -->
+  <div class="stage s-role">
+    <div class="stage-header">
+      <div class="stage-dot">4</div>
+      <div>
+        <div class="stage-title">역할 연결 — 다시 하고 싶은 것, 전하고 싶은 것 <span class="badge-new">신규 추가</span></div>
+        <div class="stage-sub">미래 역할 방향 설정 · 3~4분</div>
+      </div>
+    </div>
+    <div class="stage-body">
+      <div class="q-item">
+        <div class="q-label">재도전</div>
+        <div class="q-text">살면서 "언젠가 다시 해보고 싶다"고 마음속에 남겨둔 것이 있으세요? 일이어도 좋고, 아주 사소한 것이어도 좋아요.</div>
+        <div class="q-example">"아, 그걸 그때 못 하셨군요. 지금이라면 어떻게 해보고 싶으세요?"</div>
+        <div class="q-note">→ 억눌린 동기·미완의 경험 탐색. 새로운 역할 방향의 씨앗이 여기서 나오는 경우 많음</div>
+        <div class="q-followup">꼬리 질문: "그게 지금 SAI+에서 연결되면 어떨 것 같으세요?"</div>
+      </div>
+      <div class="q-item">
+        <div class="q-label">배움</div>
+        <div class="q-text">요즘 새롭게 배워보고 싶은 게 있으세요? 나이 때문에 망설여지는 것도 괜찮아요, 편하게 말씀해 주세요.</div>
+        <div class="q-note">→ 자기발견형·새싹탐험가 유형 식별. 학습 의지가 있는 참여자는 배움·나눔 카테고리 연결 가능</div>
+        <div class="q-followup">꼬리 질문: "그걸 배우면 어디에 써보고 싶으세요?"</div>
+      </div>
+      <div class="q-item">
+        <div class="q-label">전달</div>
+        <div class="q-text">살아오면서 쌓은 것 중에, 누군가에게 꼭 전해주고 싶은 게 있다면 뭔가요? 기술이어도 좋고, 태도나 경험이어도 좋아요.</div>
+        <div class="q-example">"그게 어떤 사람에게 가장 도움이 될 것 같으세요?"</div>
+        <div class="q-note">→ 지식나눔형·씨앗전달자 유형 식별. 멘토링·강의·코칭 매칭 방향 결정</div>
+        <div class="q-followup">꼬리 질문: "그걸 전하는 데 어떤 방식이 편하실 것 같아요? 일대일로, 아니면 여럿이 모인 자리에서요?"</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector"></div>
+
+  <!-- STEP 5: 일 조건 확인 -->
+  <div class="stage s-cond">
+    <div class="stage-header">
+      <div class="stage-dot">5</div>
+      <div>
+        <div class="stage-title">일 조건 확인 — 어떻게 일하고 싶은가</div>
+        <div class="stage-sub">매칭 필터 데이터 수집 · 2~3분</div>
+      </div>
+    </div>
+    <div class="stage-body">
+      <div class="q-item">
+        <div class="q-label">가용 시간</div>
+        <div class="q-text">일주일에 어느 정도 시간을 쓸 수 있으세요? 고정된 요일이 있으신가요, 유연하게 가능하세요?</div>
+        <div class="q-note">→ 정기 과업 vs 단기 프로젝트 매칭 분기점</div>
+      </div>
+      <div class="q-item">
+        <div class="q-label">일 형태</div>
+        <div class="q-text">직접 나가서 하는 일이 좋으세요, 집에서 할 수 있는 게 좋으세요? 섞여도 괜찮으세요?</div>
+        <div class="q-note">→ 현장형·재택형·혼합형 매칭 필터</div>
+        <div class="q-followup">꼬리 질문: "이동 거리는 어느 정도까지 괜찮으세요? 광진구 안이 좋으신가요?"</div>
+      </div>
+      <div class="q-item">
+        <div class="q-label">팀 구성</div>
+        <div class="q-text">혼자 하는 게 편하세요, 팀이랑 같이 하는 게 좋으세요?</div>
+        <div class="q-note">→ 개인 과업 vs 팀 프로젝트 매칭 필터</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector"></div>
+
+  <!-- STEP 6: 마무리 -->
+  <div class="stage s-close">
+    <div class="stage-header">
+      <div class="stage-dot">6</div>
+      <div>
+        <div class="stage-title">마무리 — 나를 한 문장으로</div>
+        <div class="stage-sub">경험자산카드 핵심 문구 생성 · 2분</div>
+      </div>
+    </div>
+    <div class="stage-body">
+      <div class="q-item">
+        <div class="q-label">자기 정의</div>
+        <div class="q-text">오늘 말씀해 주신 것 중에서, 스스로 "이건 내가 진짜 잘한다" 싶은 게 딱 하나 있다면 뭘까요?</div>
+        <div class="q-note">→ 경험자산카드 핵심 문구 직접 생성. 참여자 본인의 언어가 카드에 그대로 들어감</div>
+      </div>
+      <div class="q-item">
+        <div class="q-label">기대 조율</div>
+        <div class="q-text">SAI+에서 일거리가 연결된다면, 어떤 느낌의 일이면 "맞다" 싶으실 것 같아요?</div>
+        <div class="q-note">→ 기대치 파악 + 첫 매칭 과업 선정 기준. 너무 높거나 낮은 기대치 사전 조율 가능</div>
+      </div>
+      <div class="q-item">
+        <div class="q-label">마무리</div>
+        <div class="q-text">오늘 이렇게 이야기 나눠주셔서 정말 감사해요. 제가 못 여쭤본 것 중에 꼭 전하고 싶은 게 있으신가요?</div>
+        <div class="q-note">→ 비정형 데이터 마지막 수집 창구. 의외의 강점·경험이 여기서 나오는 경우 많음</div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -59,7 +59,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fcfdff] text-slate-900 font-sans selection:bg-purple-200">
+    <div className="min-h-screen bg-[#fcfdff] text-slate-900 font-sans break-keep selection:bg-purple-200">
       {/* Header */}
       <header className="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 transition-all">
         <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -113,18 +113,18 @@ export default function Home() {
             >
               <div className="relative inline-block w-full">
                 <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900">
-                  나를 찾고,<br className="hidden sm:block"/> 일을 잇다.
+                  나를 찾고,<br /> 일을 잇다.
                 </span>
                 {/* Text Shadow for depth */}
                 <span className="absolute left-0 top-0 z-0 text-transparent bg-clip-text bg-gradient-to-br from-purple-600/20 to-indigo-600/20 blur-2xl transform translate-y-4">
-                  나를 찾고,<br className="hidden sm:block"/> 일을 잇다.
+                  나를 찾고,<br /> 일을 잇다.
                 </span>
               </div>
             </motion.h1>
 
             <motion.p variants={fadeUp} className="text-lg md:text-2xl text-slate-500 font-light max-w-2xl mx-auto leading-relaxed mt-4">
               "당신의 경력은 끝나지 않았습니다, 역할이 바뀌었을 뿐입니다."<br />
-              <strong className="font-semibold text-slate-800">AI 기술</strong>로 은퇴 및 경단 인력을 지역 문제 해결의 주인공으로 전환합니다.
+              <strong className="font-semibold text-slate-800">AI 기술</strong>로 은퇴 및 경단 인력을<br className="hidden sm:block" /> 지역 문제 해결의 주인공으로 전환합니다.
             </motion.p>
 
             <motion.div variants={fadeUp} className="pt-8 flex flex-col sm:flex-row items-center justify-center w-full gap-5">
@@ -222,7 +222,7 @@ export default function Home() {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-500">역할을 연결합니다</span>
             </h2>
             <p className="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
-              건강·돌봄부터 문화·창작까지, 지역사회가 필요로 하는 <strong className="text-slate-800">6대 활동 영역</strong>에 연결해 드립니다. 단순한 일자리를 넘어, 삶의 활력을 되찾는 <strong className="text-purple-700">'의미 있는 역할'</strong>을 제안합니다.
+              건강·돌봄부터 문화·창작까지, 지역사회가 필요로 하는 <strong className="text-slate-800">6대 활동 영역</strong>에 연결해 드립니다.<br className="hidden md:block" /> 단순한 일자리를 넘어, 삶의 활력을 되찾는 <strong className="text-purple-700">'의미 있는 역할'</strong>을 제안합니다.
             </p>
           </motion.div>
 
@@ -271,7 +271,7 @@ export default function Home() {
             </h2>
             <div className="w-16 h-1 bg-gradient-to-r from-purple-500 to-transparent mx-auto mb-6 rounded-full"></div>
             <p className="text-lg md:text-xl text-slate-300 font-light">
-              지금 <strong className="text-white font-semibold">AI인터뷰</strong>를 신청하시고<br className="hidden md:block"/> 당신만의 프로필을 받아보세요.
+              지금 <strong className="text-white font-semibold">AI인터뷰</strong>를 신청하시고<br /> 당신만의 프로필을 받아보세요.
             </p>
           </motion.div>
 
