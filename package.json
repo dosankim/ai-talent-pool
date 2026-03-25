@@ -18,7 +18,9 @@
     "openai": "^6.23.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "retell-client-js-sdk": "^2.0.7",
     "retell-sdk": "^5.2.0",
+    "solapi": "^5.5.4",
     "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {

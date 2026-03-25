@@ -16,7 +16,7 @@ export async function POST(request: Request) {
 
         console.log(`[Manual AI Call Triggered] Calling ${name} at ${phone}...`);
 
-        const agentId = process.env.RETELL_AGENT_ID || "agent_d0b27c4659b0feb0f6eaeeaaaf";
+        const agentId = process.env.RETELL_AGENT_ID || "agent_cca4333d1b63d905ee50c810c7";
         if (!agentId) throw new Error("Retell Agent ID is missing");
 
         // Retell AI (and Twilio) requires E.164 format (+CountryCode PhoneNumber)
