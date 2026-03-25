@@ -16,6 +16,14 @@ export async function POST(request: Request) {
     try {
         const { name, phone, agreed } = await request.json();
 
+        // 0. 환경 변수 로깅 (Vercel 로그에서 확인용)
+        const apiKey = process.env.SOLAPI_API_KEY;
+        const apiSecret = process.env.SOLAPI_API_SECRET;
+        const senderNumber = process.env.SOLAPI_SENDER_NUMBER;
+        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
+        console.log(`[Registration Debug] API_KEY: ${apiKey ? 'SET' : 'MISSING'}, SECRET: ${apiSecret ? 'SET' : 'MISSING'}, SENDER: ${senderNumber}, SITE_URL: ${siteUrl}`);
+
         if (!name || !phone) {
             return NextResponse.json({ error: '이름과 연락처는 필수 항목입니다.' }, { status: 400 });
         }
@@ -34,27 +42,33 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: '유저 데이터 저장 실패' }, { status: 500 });
         }
 
-        // 2. 고유 접속 링크 생성 (환경 변수가 없으면 localhost 우선, 프로덕션에선 VERCEL_URL 등 활용)
-        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+        // 2. 고유 접속 링크 생성
+        const baseUrl = siteUrl || 'http://localhost:3000';
         const callLink = `${baseUrl}/call/${user.id}`;
         const messageText = `[SAI PLUS]\n\n안녕하세요 ${name} 선생님.\nAI 시니어 캐스팅 인터뷰 신청이 완료되었습니다.\n\n아래 전용 링크를 눌러 편하신 시간에 언제든 AI 인터뷰를 진행해 주세요.\n\n▶ 인터뷰 시작하기:\n${callLink}\n\n문의사항이 있으시면 언제든 연락바랍니다. 감사합니다.`;
 
         // 3. Solapi 알림톡/문자 발송
-        if (messageService && SENDER_NUMBER !== '01000000000') {
+        if (apiKey && apiSecret && senderNumber && senderNumber !== '01000000000') {
             try {
-                await messageService.sendOne({
+                const messageService = new SolapiMessageService(apiKey, apiSecret);
+                const result = await messageService.sendOne({
                     to: phone.replace(/[^0-9]/g, ''),
-                    from: SENDER_NUMBER,
+                    from: senderNumber,
                     text: messageText,
                 });
-                console.log(`[SMS 발송 성공] ${phone} -> ${callLink}`);
-            } catch (smsError) {
-                console.error('[SMS 발송 실패]', smsError);
-                // 발송 실패해도 사용자는 알 필요 없이, 내부 로그만 남김. (나중에 어드민에서 재발송 가능)
+                console.log(`[SMS 발송 성공] Result ID: ${result.messageId}`);
+            } catch (smsError: any) {
+                console.error('[Solapi Error Depth Detail]');
+                if (smsError.response) {
+                    console.error('Status:', smsError.response.status);
+                    console.error('Data:', JSON.stringify(smsError.response.data));
+                } else {
+                    console.error('Error Message:', smsError.message);
+                }
             }
         } else {
-            // API Key가 없거나 발신번호가 기본값인 경우 개발 모드로 판단하고 콘솔에 링크 출력
-            console.log('\n--- [DEV MODE] SMS 알림톡 시뮬레이션 ---');
+            console.log('\n--- [SKIP MODE] SMS 발송 조건 미충족 ---');
+            console.log(`[Reason]: ${!apiKey || !apiSecret ? 'Keys missing' : 'Sender number is default'}`);
             console.log(`[To]: ${phone}`);
             console.log(messageText);
             console.log('----------------------------------------\n');
@@ -66,7 +80,7 @@ export async function POST(request: Request) {
         });
 
     } catch (error: any) {
-        console.error('Register API Error:', error);
+        console.error('Register API Fatal Error:', error);
         return NextResponse.json({ error: error.message || 'Internal server error' }, { status: 500 });
     }
 }
