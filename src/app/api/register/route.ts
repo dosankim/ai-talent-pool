@@ -16,13 +16,10 @@ export async function POST(request: Request) {
     try {
         const { name, phone, agreed } = await request.json();
 
-        // 0. 환경 변수 로깅 (Vercel 로그에서 확인용)
         const apiKey = process.env.SOLAPI_API_KEY;
         const apiSecret = process.env.SOLAPI_API_SECRET;
         const senderNumber = process.env.SOLAPI_SENDER_NUMBER;
         const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
-
-        console.log(`[Registration Debug] API_KEY: ${apiKey ? 'SET' : 'MISSING'}, SECRET: ${apiSecret ? 'SET' : 'MISSING'}, SENDER: ${senderNumber}, SITE_URL: ${siteUrl}`);
 
         if (!name || !phone) {
             return NextResponse.json({ error: '이름과 연락처는 필수 항목입니다.' }, { status: 400 });
@@ -56,22 +53,15 @@ export async function POST(request: Request) {
                     from: senderNumber,
                     text: messageText,
                 });
-                console.log(`[SMS 발송 성공] Result ID: ${result.messageId}`);
+                console.log(`[SMS 발송 성공] User: ${name}, MsgId: ${result.messageId}`);
             } catch (smsError: any) {
-                console.error('[Solapi Error Depth Detail]');
+                console.error('[Solapi Error Detail]');
                 if (smsError.response) {
-                    console.error('Status:', smsError.response.status);
                     console.error('Data:', JSON.stringify(smsError.response.data));
                 } else {
                     console.error('Error Message:', smsError.message);
                 }
             }
-        } else {
-            console.log('\n--- [SKIP MODE] SMS 발송 조건 미충족 ---');
-            console.log(`[Reason]: ${!apiKey || !apiSecret ? 'Keys missing' : 'Sender number is default'}`);
-            console.log(`[To]: ${phone}`);
-            console.log(messageText);
-            console.log('----------------------------------------\n');
         }
 
         return NextResponse.json({
