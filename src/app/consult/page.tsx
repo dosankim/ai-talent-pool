@@ -60,16 +60,30 @@ export default function ConsultPage() {
         setErrorMessage("");
 
         try {
-            // 1. Backend에서 access_token 발급
-            const res = await fetch("/api/web-call", {
+            // 1. 유저 등록 및 DB 저장 (SMS 알림 발송 포함)
+            const registerRes = await fetch("/api/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name: name.trim(), phone: phone.trim(), agreed }),
             });
 
+            if (!registerRes.ok) {
+                const errorData = await registerRes.json();
+                throw new Error(errorData.error || "사용자 등록 실패");
+            }
+
+            const { userId } = await registerRes.json();
+
+            // 2. 발급받은 userId로 Retell Web Call 연결
+            const res = await fetch("/api/web-call", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ userId }),
+            });
+
             if (!res.ok) {
                 const errorData = await res.json();
-                throw new Error(errorData.error || "서버 연결 실패");
+                throw new Error(errorData.error || "웹 통화 서버 연결 실패");
             }
 
             const { accessToken } = await res.json();
