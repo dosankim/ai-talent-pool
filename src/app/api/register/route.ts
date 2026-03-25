@@ -40,9 +40,16 @@ export async function POST(request: Request) {
         }
 
         // 2. 고유 접속 링크 생성
-        // VERCEL_URL은 자동 제공되나 https:// 없이 제공됨
-        const vercelUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null;
-        const baseUrl = siteUrl || vercelUrl || 'http://localhost:3000';
+        // 가장 확실한 방법: 사용자가 접속한 도메인(host) 정보를 그대로 사용
+        const host = request.headers.get('host');
+        const protocol = host?.includes('localhost') ? 'http' : 'https';
+        const requestOrigin = host ? `${protocol}://${host}` : null;
+        
+        const vercelProdUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+            ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+            : null;
+            
+        const baseUrl = siteUrl || requestOrigin || vercelProdUrl || 'http://localhost:3000';
         const callLink = `${baseUrl}/call/${user.id}`;
         const messageText = `[SAI PLUS]\n\n안녕하세요 ${name} 선생님.\nAI 시니어 캐스팅 인터뷰 신청이 완료되었습니다.\n\n아래 전용 링크를 눌러 편하신 시간에 언제든 AI 인터뷰를 진행해 주세요.\n\n▶ 인터뷰 시작하기:\n${callLink}\n\n문의사항이 있으시면 언제든 연락바랍니다. 감사합니다.`;
 
